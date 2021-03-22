@@ -1,6 +1,9 @@
 {
   "scripts": {
-    "dev": "parcel serve --port 3000 --out-dir ./.cache/_dev ./src/index.html"
+    "dev": "parcel serve --port 3000 --out-dir ./.cache/_dev ./src/index.html",
+    "build": "yarn run build:run-on-connected-device",
+    "build:open-xcode": "./scripts/build.sh openxcode",
+    "build:run-on-connected-device": "./scripts/build.sh"
   },
   "dependencies": {
     "@capacitor/core": "^2.4.7",

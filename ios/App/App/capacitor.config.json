@@ -3,7 +3,7 @@
   "appName": "App",
   "bundledWebRuntime": false,
   "npmClient": "yarn",
-  "webDir": "www",
+  "webDir": "./.cache/_web_build/",
   "plugins": {
     "SplashScreen": {
       "launchShowDuration": 0
