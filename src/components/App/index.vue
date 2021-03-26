@@ -31,5 +31,6 @@ p {
 * {
   box-sizing: border-box;
   outline: none;
+  user-select: none;
 }
 </style>
