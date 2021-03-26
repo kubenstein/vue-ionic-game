@@ -1,7 +1,7 @@
 <template>
   <div ref="screen" class="game" @click="click">
-    <p class="points">Points: {{ points }}</p>
-    <img class="player" :src="dinoPng" :style="{ left: `${dinoX}px`, top: `${dinoY}px` }" />
+    <p class="points">Record: {{ maxPoints }}<br />Points: {{ points }}</p>
+    <img class="player" :src="dinoPng" :style="{ left: `${playerX}px`, top: `${playerY}px` }" />
     <img
       v-for="obstacle in obstacles"
       :key="obstacle.id"
@@ -19,7 +19,7 @@ import { randomNumberBetween } from "../../../lib/utils";
 import dinoPng from "../../../assets/images/dino.png";
 import obstaclePng from "../../../assets/images/obstacle.png";
 
-const { Haptics } = Plugins;
+const { Haptics, Storage } = Plugins;
 
 const STATE = {
   idle: "idle",
@@ -35,16 +35,17 @@ export default {
       STATE,
 
       state: STATE.idle,
-      dinoY: 350,
-      dinoX: 50,
-      dinoYVelocity: 0,
+      maxPoints: 0,
+      playerY: 350,
+      playerX: 50,
+      playerVelocityY: 0,
       force: -0.5,
       jumpForce: 6,
       totalObstacleCount: 0,
       maxObstacleCount: 5,
       obstacleGap: 200,
       obstacles: [],
-      obstacleYVelocity: 3,
+      obstacleVelocityX: 3,
       gameInterval: null,
     };
   },
@@ -75,7 +76,7 @@ export default {
       Haptics.impact({ style: HapticsImpactStyle.Heavy });
 
       if (this.state === STATE.play) {
-        this.dinoYVelocity = this.jumpForce;
+        this.playerVelocityY = this.jumpForce;
       }
       if (this.state === STATE.gameOver) {
         this.$router.push({ path: "/" });
@@ -84,53 +85,55 @@ export default {
 
     startGame() {
       this.totalObstacleCount = 0;
-      this.dinoX = 50;
-      this.dinoYVelocity = 0;
+      this.playerX = 50;
+      this.playerVelocityY = 0;
       this.obstacles = [];
       this.gameInterval = setInterval(() => this.gameLoop(), 1000 / 30);
+      Storage.get({ key: "maxPoints" }).then(({ value }) => (this.maxPoints = parseInt(value || "0")));
     },
 
     gameOver() {
       clearInterval(this.gameInterval);
+      Storage.set({ key: "maxPoints", value: `${this.points}` });
     },
 
     gameLoop() {
-      this.moveDino();
+      this.movePlayer();
       this.moveAndRemoveObstacles();
       this.detectCollisionWithObstacles();
       this.detectCollisionWithGround();
       this.addObstaclesIfNeeded();
     },
 
-    moveDino() {
-      this.dinoYVelocity += this.force;
-      this.dinoY -= this.dinoYVelocity;
+    movePlayer() {
+      this.playerVelocityY += this.force;
+      this.playerY -= this.playerVelocityY;
     },
 
     moveAndRemoveObstacles() {
       this.obstacles = this.obstacles
         .map((obstacle) => ({
           ...obstacle,
-          x: obstacle.x - this.obstacleYVelocity,
+          x: obstacle.x - this.obstacleVelocityX,
         }))
         .filter((obstacle) => obstacle.x > -60);
     },
 
     detectCollisionWithObstacles() {
       const possibleCollision = this.obstacles.filter(
-        (obstacle) => obstacle.x < this.dinoX + 60 && obstacle.x >= this.dinoX
+        (obstacle) => this.playerX + 60 > obstacle.x && this.playerX < obstacle.x + 60
       )[0];
       if (!possibleCollision) return;
       const collision =
-        this.dinoY < possibleCollision.gapStarts + possibleCollision.y ||
-        this.dinoY + 60 > possibleCollision.gapEnds + possibleCollision.y;
+        this.playerY < possibleCollision.gapStarts + possibleCollision.y ||
+        this.playerY + 60 > possibleCollision.gapEnds + possibleCollision.y;
 
       if (collision) this.state = STATE.gameOver;
     },
 
     detectCollisionWithGround() {
       const screenHeight = this.$refs.screen.getBoundingClientRect().height;
-      const collision = this.dinoY + 60 > screenHeight;
+      const collision = this.playerY + 60 > screenHeight;
 
       if (collision) this.state = STATE.gameOver;
     },
