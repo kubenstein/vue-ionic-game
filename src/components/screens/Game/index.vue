@@ -118,7 +118,7 @@ export default {
 
     detectCollisionWithObstacles() {
       const possibleCollision = this.obstacles.filter(
-        (obstacle) => obstacle.x < this.playerX + 60 && obstacle.x >= this.playerX
+        (obstacle) => this.playerX + 60 > obstacle.x && this.playerX < obstacle.x + 60
       )[0];
       if (!possibleCollision) return;
       const collision =
