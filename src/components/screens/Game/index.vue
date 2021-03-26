@@ -5,7 +5,10 @@
 </template>
 
 <script>
+import { HapticsImpactStyle, Plugins } from "@capacitor/core";
 import dinoPng from "../../../assets/images/dino.png";
+
+const { Haptics } = Plugins;
 export default {
   data() {
     return {
@@ -33,6 +36,7 @@ export default {
     },
 
     click() {
+      Haptics.impact({ style: HapticsImpactStyle.Heavy });
       this.dinoYVelocity = this.jumpForce;
     },
   },
