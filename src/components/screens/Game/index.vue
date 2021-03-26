@@ -13,6 +13,7 @@
 
 <script>
 import { HapticsImpactStyle, Plugins } from "@capacitor/core";
+import { randomNumberBetween } from "../../../lib/utils";
 import dinoPng from "../../../assets/images/dino.png";
 import obstaclePng from "../../../assets/images/obstacle.png";
 
@@ -27,12 +28,9 @@ export default {
       dinoYVelocity: 0,
       force: -0.5,
       jumpForce: 6,
-      obstacles: [
-        { id: 1, x: 414, y: -250, gapStarts: 474, gapEnds: 628 },
-        { id: 2, x: 2 * 300, y: -250, gapStarts: 474, gapEnds: 628 },
-        { id: 3, x: 3 * 300, y: -0, gapStarts: 474, gapEnds: 628 },
-        { id: 4, x: 4 * 300, y: -150, gapStarts: 474, gapEnds: 628 },
-      ],
+      maxObstacleCount: 5,
+      obstacleGap: 200,
+      obstacles: [],
       obstacleYVelocity: 3,
       gameInterval: null,
     };
@@ -57,6 +55,7 @@ export default {
       this.moveAndRemoveObstacles();
       this.detectCollisionWithObstacles();
       this.detectCollisionWithGround();
+      this.addObstaclesIfNeeded();
     },
 
     moveDino() {
@@ -90,6 +89,32 @@ export default {
       const collision = this.dinoY + 60 > screenHeight;
 
       if (collision) alert("hit");
+    },
+
+    addObstaclesIfNeeded() {
+      const screenWidth = this.$refs.screen.getBoundingClientRect().width;
+
+      if (this.obstacles.length === 0) {
+        for (let i = 0; i < this.maxObstacleCount; i++) {
+          this.spawnObstacle(screenWidth + this.obstacleGap * i);
+        }
+      }
+
+      if (this.obstacles.length < this.maxObstacleCount) {
+        const lastObstacle = this.obstacles[this.obstacles.length - 1];
+        this.spawnObstacle(lastObstacle.x + this.obstacleGap);
+      }
+    },
+
+    spawnObstacle(x) {
+      const obstacle = {
+        id: `${Math.random()}`,
+        x: x,
+        y: -randomNumberBetween(0, 250),
+        gapStarts: 474,
+        gapEnds: 628,
+      };
+      this.obstacles.push(obstacle);
     },
   },
 };
