@@ -1,6 +1,6 @@
 <template>
   <div ref="screen" class="welcome" @click="startGame">
-    <img class="dino" :src="dinoPng" :style="{ left: `${dinoX}px`, top: `${dinoY}px` }" />
+    <img class="player" :src="dinoPng" :style="{ left: `${playerX}px`, top: `${playerY}px` }" />
     <h1 class="title">
       Welcome to:
       <br />
@@ -17,9 +17,9 @@ export default {
   data() {
     return {
       dinoPng,
-      dinoY: 350,
-      dinoX: 170,
-      dinoYVelocity: 0,
+      playerY: 350,
+      playerX: 170,
+      playerYVelocity: 0,
       force: -0.5,
       jumpForce: 6,
       autoJumpInterval: null,
@@ -44,18 +44,18 @@ export default {
     autoJump() {
       const screenHeight = this.$refs.screen.getBoundingClientRect().height;
 
-      if (this.dinoY > screenHeight / 3) {
-        this.dinoYVelocity = this.jumpForce;
+      if (this.playerY > screenHeight / 3) {
+        this.playerYVelocity = this.jumpForce;
       }
     },
 
     gameLoop() {
-      this.moveDino();
+      this.movePlayer();
     },
 
-    moveDino() {
-      this.dinoYVelocity += this.force;
-      this.dinoY -= this.dinoYVelocity;
+    movePlayer() {
+      this.playerYVelocity += this.force;
+      this.playerY -= this.playerYVelocity;
     },
   },
 };
@@ -70,7 +70,7 @@ export default {
   background: #70c5ce url("../../../assets/images/background.png") 0 100% no-repeat;
 }
 
-.dino {
+.player {
   position: absolute;
   width: 60px;
   height: 60px;
