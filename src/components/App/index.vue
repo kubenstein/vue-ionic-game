@@ -11,13 +11,18 @@ export default {
 </script>
 
 <style lang="scss">
+@font-face {
+  font-family: "Press Start 2P";
+  src: url("../../assets/fonts/PressStart2P-Regular.ttf") format("truetype");
+}
+
 html {
   height: 100%;
 }
 
 body {
   height: 100%;
-  font-family: Tahoma, sans-serif;
+  font-family: "Press Start 2P", Tahoma, sans-serif;
 }
 
 html,
