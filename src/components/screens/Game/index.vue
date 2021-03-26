@@ -44,7 +44,7 @@ export default {
       maxObstacleCount: 5,
       obstacleGap: 200,
       obstacles: [],
-      obstacleYVelocity: 3,
+      obstacleVelocityX: 3,
       gameInterval: null,
     };
   },
@@ -111,7 +111,7 @@ export default {
       this.obstacles = this.obstacles
         .map((obstacle) => ({
           ...obstacle,
-          x: obstacle.x - this.obstacleYVelocity,
+          x: obstacle.x - this.obstacleVelocityX,
         }))
         .filter((obstacle) => obstacle.x > -60);
     },
