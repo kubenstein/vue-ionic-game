@@ -1,6 +1,6 @@
 <template>
   <div ref="screen" class="game" @click="click">
-    <p class="points">Points: {{ points }}</p>
+    <p class="points">Record: {{ maxPoints }}<br />Points: {{ points }}</p>
     <img class="player" :src="dinoPng" :style="{ left: `${playerX}px`, top: `${playerY}px` }" />
     <img
       v-for="obstacle in obstacles"
@@ -19,7 +19,7 @@ import { randomNumberBetween } from "../../../lib/utils";
 import dinoPng from "../../../assets/images/dino.png";
 import obstaclePng from "../../../assets/images/obstacle.png";
 
-const { Haptics } = Plugins;
+const { Haptics, Storage } = Plugins;
 
 const STATE = {
   idle: "idle",
@@ -35,6 +35,7 @@ export default {
       STATE,
 
       state: STATE.idle,
+      maxPoints: 0,
       playerY: 350,
       playerX: 50,
       playerVelocityY: 0,
@@ -88,10 +89,12 @@ export default {
       this.playerVelocityY = 0;
       this.obstacles = [];
       this.gameInterval = setInterval(() => this.gameLoop(), 1000 / 30);
+      Storage.get({ key: "maxPoints" }).then(({ value }) => (this.maxPoints = parseInt(value || "0")));
     },
 
     gameOver() {
       clearInterval(this.gameInterval);
+      Storage.set({ key: "maxPoints", value: `${this.points}` });
     },
 
     gameLoop() {
