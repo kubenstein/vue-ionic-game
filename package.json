@@ -1,4 +1,11 @@
 {
+  "name": "open-hack-day-ionic",
+  "version": "0.0.1",
+  "description": "",
+  "private": true,
+  "engines": {
+    "node": "14"
+  },
   "scripts": {
     "dev": "parcel serve --port 3000 --out-dir ./.cache/_dev ./src/index.html",
     "build": "yarn run build:run-on-connected-device",
@@ -11,6 +18,15 @@
   },
   "devDependencies": {
     "@capacitor/cli": "^2.4.7",
-    "parcel-bundler": "^1.12.5"
+    "eslint": "^7.20.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-vue": "^7.6.0",
+    "parcel-bundler": "^1.12.5",
+    "prettier": "^2.2.1",
+    "stylelint": "^13.10.0",
+    "stylelint-config-prettier": "^8.0.2",
+    "stylelint-order": "^4.1.0",
+    "stylelint-prettier": "^1.1.2"
   }
 }
