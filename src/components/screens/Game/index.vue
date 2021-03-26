@@ -8,6 +8,7 @@
       :src="obstaclePng"
       :style="{ left: `${obstacle.x}px`, top: `${obstacle.y}px` }"
     />
+    <p v-if="state === STATE.gameOver" class="gameOver">Game Over!</p>
   </div>
 </template>
 
@@ -30,6 +31,7 @@ export default {
     return {
       dinoPng,
       obstaclePng,
+      STATE,
 
       state: STATE.idle,
       dinoY: 350,
@@ -171,5 +173,16 @@ export default {
 .obstacle {
   position: absolute;
   width: 60px;
+}
+
+.gameOver {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  color: #45584d;
+  font-size: 0.8rem;
+  text-align: center;
+  text-shadow: 2px 2px #718f78;
 }
 </style>
