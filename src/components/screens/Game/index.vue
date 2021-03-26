@@ -43,7 +43,7 @@ export default {
 .game {
   position: relative;
   height: 100%;
-  background-color: #63b7c1;
+  background: #70c5ce url("../../../assets/images/background.png") 0 100% no-repeat;
 }
 
 .player {
