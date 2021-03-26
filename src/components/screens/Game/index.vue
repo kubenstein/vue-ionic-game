@@ -76,7 +76,9 @@ export default {
 <style lang="scss" scoped>
 .game {
   position: relative;
+  width: 100%;
   height: 100%;
+  overflow: hidden;
   background: #70c5ce url("../../../assets/images/background.png") 0 100% no-repeat;
 }
 
