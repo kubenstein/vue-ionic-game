@@ -19,7 +19,7 @@ export default {
       dinoPng,
       playerY: 350,
       playerX: 170,
-      playerYVelocity: 0,
+      playerVelocityY: 0,
       force: -0.5,
       jumpForce: 6,
       autoJumpInterval: null,
@@ -45,7 +45,7 @@ export default {
       const screenHeight = this.$refs.screen.getBoundingClientRect().height;
 
       if (this.playerY > screenHeight / 3) {
-        this.playerYVelocity = this.jumpForce;
+        this.playerVelocityY = this.jumpForce;
       }
     },
 
@@ -54,8 +54,8 @@ export default {
     },
 
     movePlayer() {
-      this.playerYVelocity += this.force;
-      this.playerY -= this.playerYVelocity;
+      this.playerVelocityY += this.force;
+      this.playerY -= this.playerVelocityY;
     },
   },
 };

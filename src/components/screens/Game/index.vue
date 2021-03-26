@@ -37,7 +37,7 @@ export default {
       state: STATE.idle,
       playerY: 350,
       playerX: 50,
-      playerYVelocity: 0,
+      playerVelocityY: 0,
       force: -0.5,
       jumpForce: 6,
       totalObstacleCount: 0,
@@ -75,7 +75,7 @@ export default {
       Haptics.impact({ style: HapticsImpactStyle.Heavy });
 
       if (this.state === STATE.play) {
-        this.playerYVelocity = this.jumpForce;
+        this.playerVelocityY = this.jumpForce;
       }
       if (this.state === STATE.gameOver) {
         this.$router.push({ path: "/" });
@@ -85,7 +85,7 @@ export default {
     startGame() {
       this.totalObstacleCount = 0;
       this.playerX = 50;
-      this.playerYVelocity = 0;
+      this.playerVelocityY = 0;
       this.obstacles = [];
       this.gameInterval = setInterval(() => this.gameLoop(), 1000 / 30);
     },
@@ -103,8 +103,8 @@ export default {
     },
 
     movePlayer() {
-      this.playerYVelocity += this.force;
-      this.playerY -= this.playerYVelocity;
+      this.playerVelocityY += this.force;
+      this.playerY -= this.playerVelocityY;
     },
 
     moveAndRemoveObstacles() {
