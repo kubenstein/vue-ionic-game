@@ -18,11 +18,20 @@ import dinoPng from "../../../assets/images/dino.png";
 import obstaclePng from "../../../assets/images/obstacle.png";
 
 const { Haptics } = Plugins;
+
+const STATE = {
+  idle: "idle",
+  play: "play",
+  gameOver: "gameOver",
+};
+
 export default {
   data() {
     return {
       dinoPng,
       obstaclePng,
+
+      state: STATE.idle,
       dinoY: 350,
       dinoX: 50,
       dinoYVelocity: 0,
@@ -36,8 +45,15 @@ export default {
     };
   },
 
+  watch: {
+    state(newValue) {
+      if (newValue === STATE.play) this.startGame();
+      if (newValue === STATE.gameOver) this.gameOver();
+    },
+  },
+
   mounted() {
-    this.gameInterval = setInterval(() => this.gameLoop(), 1000 / 30);
+    this.state = STATE.play;
   },
 
   beforeDestroy() {
@@ -47,7 +63,24 @@ export default {
   methods: {
     click() {
       Haptics.impact({ style: HapticsImpactStyle.Heavy });
-      this.dinoYVelocity = this.jumpForce;
+
+      if (this.state === STATE.play) {
+        this.dinoYVelocity = this.jumpForce;
+      }
+      if (this.state === STATE.gameOver) {
+        this.$router.push({ path: "/" });
+      }
+    },
+
+    startGame() {
+      this.dinoX = 50;
+      this.dinoYVelocity = 0;
+      this.obstacles = [];
+      this.gameInterval = setInterval(() => this.gameLoop(), 1000 / 30);
+    },
+
+    gameOver() {
+      clearInterval(this.gameInterval);
     },
 
     gameLoop() {
@@ -81,14 +114,14 @@ export default {
         this.dinoY < possibleCollision.gapStarts + possibleCollision.y ||
         this.dinoY + 60 > possibleCollision.gapEnds + possibleCollision.y;
 
-      if (collision) alert("hit");
+      if (collision) this.state = STATE.gameOver;
     },
 
     detectCollisionWithGround() {
       const screenHeight = this.$refs.screen.getBoundingClientRect().height;
       const collision = this.dinoY + 60 > screenHeight;
 
-      if (collision) alert("hit");
+      if (collision) this.state = STATE.gameOver;
     },
 
     addObstaclesIfNeeded() {
