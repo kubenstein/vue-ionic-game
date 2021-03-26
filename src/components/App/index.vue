@@ -8,15 +8,17 @@ export default {};
 
 <style lang="scss">
 html {
-  height: calc(100% - 32px);
+  height: 100%;
 }
 
 body {
+  height: 100%;
   font-family: Tahoma, sans-serif;
 }
 
 html,
 body,
+h1,
 p {
   margin: 0;
   padding: 0;
