@@ -3,7 +3,11 @@
 </template>
 
 <script>
-export default {};
+export default {
+  mounted() {
+    window.screen.orientation.lock("portrait");
+  },
+};
 </script>
 
 <style lang="scss">
