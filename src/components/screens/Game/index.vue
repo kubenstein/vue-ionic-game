@@ -1,5 +1,6 @@
 <template>
   <div ref="screen" class="game" @click="click">
+    <p class="points">Points: {{ points }}</p>
     <img class="player" :src="dinoPng" :style="{ left: `${dinoX}px`, top: `${dinoY}px` }" />
     <img
       v-for="obstacle in obstacles"
@@ -39,12 +40,19 @@ export default {
       dinoYVelocity: 0,
       force: -0.5,
       jumpForce: 6,
+      totalObstacleCount: 0,
       maxObstacleCount: 5,
       obstacleGap: 200,
       obstacles: [],
       obstacleYVelocity: 3,
       gameInterval: null,
     };
+  },
+
+  computed: {
+    points() {
+      return this.totalObstacleCount - this.obstacles.length;
+    },
   },
 
   watch: {
@@ -75,6 +83,7 @@ export default {
     },
 
     startGame() {
+      this.totalObstacleCount = 0;
       this.dinoX = 50;
       this.dinoYVelocity = 0;
       this.obstacles = [];
@@ -150,6 +159,7 @@ export default {
         gapEnds: 628,
       };
       this.obstacles.push(obstacle);
+      this.totalObstacleCount += 1;
     },
   },
 };
@@ -184,5 +194,14 @@ export default {
   font-size: 0.8rem;
   text-align: center;
   text-shadow: 2px 2px #718f78;
+}
+
+.points {
+  position: absolute;
+  top: 50px;
+  left: 10px;
+  z-index: 10;
+  color: #45584d;
+  font-size: 0.8rem;
 }
 </style>
