@@ -1,5 +1,5 @@
 <template>
-  <div class="game" @click="click">
+  <div ref="screen" class="game" @click="click">
     <img class="player" :src="dinoPng" :style="{ left: `${dinoX}px`, top: `${dinoY}px` }" />
     <img
       v-for="obstacle in obstacles"
@@ -53,12 +53,13 @@ export default {
     },
 
     gameLoop() {
-      this.adjustDinoVelocity();
+      this.moveDino();
       this.moveAndRemoveObstacles();
-      this.detectCollision();
+      this.detectCollisionWithObstacles();
+      this.detectCollisionWithGround();
     },
 
-    adjustDinoVelocity() {
+    moveDino() {
       this.dinoYVelocity += this.force;
       this.dinoY -= this.dinoYVelocity;
     },
@@ -72,7 +73,7 @@ export default {
         .filter((obstacle) => obstacle.x > -60);
     },
 
-    detectCollision() {
+    detectCollisionWithObstacles() {
       const possibleCollision = this.obstacles.filter(
         (obstacle) => obstacle.x < this.dinoX + 60 && obstacle.x >= this.dinoX
       )[0];
@@ -80,6 +81,13 @@ export default {
       const collision =
         this.dinoY < possibleCollision.gapStarts + possibleCollision.y ||
         this.dinoY + 60 > possibleCollision.gapEnds + possibleCollision.y;
+
+      if (collision) alert("hit");
+    },
+
+    detectCollisionWithGround() {
+      const screenHeight = this.$refs.screen.getBoundingClientRect().height;
+      const collision = this.dinoY + 60 > screenHeight;
 
       if (collision) alert("hit");
     },
