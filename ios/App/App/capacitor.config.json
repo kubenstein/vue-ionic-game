@@ -1,6 +1,6 @@
 {
-  "appId": "com.example.app",
-  "appName": "App",
+  "appId": "pl.jakubnieczas.open-hack-day-ionic",
+  "appName": "Flappy Komoju",
   "bundledWebRuntime": false,
   "npmClient": "yarn",
   "webDir": "./.cache/_web_build/",
