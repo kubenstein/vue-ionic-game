@@ -197,11 +197,13 @@ export default {
   position: absolute;
   width: 60px;
   height: 60px;
+  pointer-events: none;
 }
 
 .obstacle {
   position: absolute;
   width: 60px;
+  pointer-events: none;
 }
 
 .gameOver {
