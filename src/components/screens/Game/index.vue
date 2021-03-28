@@ -89,12 +89,19 @@ export default {
       this.playerVelocityY = 0;
       this.obstacles = [];
       this.gameInterval = setInterval(() => this.gameLoop(), 1000 / 30);
-      Storage.get({ key: "maxPoints" }).then(({ value }) => (this.maxPoints = parseInt(value || "0")));
+      this.loadMaxResult();
     },
 
     gameOver() {
       clearInterval(this.gameInterval);
+      this.saveMaxResult();
+    },
 
+    loadMaxResult() {
+      Storage.get({ key: "maxPoints" }).then(({ value }) => (this.maxPoints = parseInt(value || "0")));
+    },
+
+    saveMaxResult() {
       Storage.get({ key: "maxPoints" })
         .then(({ value }) => {
           const previousResult = parseInt(value || "0");
