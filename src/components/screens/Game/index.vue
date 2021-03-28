@@ -94,7 +94,16 @@ export default {
 
     gameOver() {
       clearInterval(this.gameInterval);
-      Storage.set({ key: "maxPoints", value: `${this.points}` });
+
+      Storage.get({ key: "maxPoints" })
+        .then(({ value }) => {
+          const previousResult = parseInt(value || "0");
+          const newResult = Math.max(this.points, previousResult);
+          return newResult;
+        })
+        .then((newResult) => {
+          Storage.set({ key: "maxPoints", value: `${newResult}` });
+        });
     },
 
     gameLoop() {
