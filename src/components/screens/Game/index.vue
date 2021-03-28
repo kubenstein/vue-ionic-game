@@ -1,6 +1,6 @@
 <template>
   <div ref="screen" class="game" @click="click">
-    <p class="points">Record: {{ maxPoints }}<br />Points: {{ points }}</p>
+    <p class="points">Record: {{ record }}<br />Points: {{ points }}</p>
     <img class="player" :src="dinoPng" :style="{ left: `${playerX}px`, top: `${playerY}px` }" />
     <img
       v-for="obstacle in obstacles"
@@ -35,7 +35,7 @@ export default {
       STATE,
 
       state: STATE.idle,
-      maxPoints: 0,
+      record: 0,
       playerY: 350,
       playerX: 50,
       playerVelocityY: 0,
@@ -89,27 +89,27 @@ export default {
       this.playerVelocityY = 0;
       this.obstacles = [];
       this.gameInterval = setInterval(() => this.gameLoop(), 1000 / 30);
-      this.loadMaxResult();
+      this.loadRecord();
     },
 
     gameOver() {
       clearInterval(this.gameInterval);
-      this.saveMaxResult();
+      this.saveRecord();
     },
 
-    loadMaxResult() {
-      Storage.get({ key: "maxPoints" }).then(({ value }) => (this.maxPoints = parseInt(value || "0")));
+    loadRecord() {
+      Storage.get({ key: "record" }).then(({ value }) => (this.record = parseInt(value || "0")));
     },
 
-    saveMaxResult() {
-      Storage.get({ key: "maxPoints" })
+    saveRecord() {
+      Storage.get({ key: "record" })
         .then(({ value }) => {
-          const previousResult = parseInt(value || "0");
-          const newResult = Math.max(this.points, previousResult);
-          return newResult;
+          const previousRecord = parseInt(value || "0");
+          const newRecord = Math.max(this.points, previousRecord);
+          return newRecord;
         })
-        .then((newResult) => {
-          Storage.set({ key: "maxPoints", value: `${newResult}` });
+        .then((newRecord) => {
+          Storage.set({ key: "record", value: `${newRecord}` });
         });
     },
 
