@@ -5,10 +5,13 @@ During this hackathon I was exploring Ionic framework.
 The long term goal is to be able to leverage all my JS web app skills to deliver native apps fast.
 
 # Demo:
-![demo](./.readmeAssets/gamePlay.gif)
 
-(The game runs smoothly on 30fps, low framerate is just to optimise the gif)
-
+<p align="center">
+  <img src="./.readmeAssets/gamePlay.gif" height="400" />
+</p>
+<p align="center">
+  (The game runs smoothly on 30fps, low framerate is just to optimise the gif)
+</p>
 
 ## General Architecture
 The app is split into 2 parts, iOS project and the vue-based website running the game.
